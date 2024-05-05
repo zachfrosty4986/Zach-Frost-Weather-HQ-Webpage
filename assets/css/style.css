@@ -4,6 +4,15 @@
     padding: 0;
     box-sizing: border-box;
 }
+p {
+    font-family: Bradley Hand, Cursive;
+    margin: 5px;
+}
+
+h2 {
+    font-family: Bradley Hand, Cursive; 
+    margin-top: 5px;
+}
 
 /* Body styles */
 body {
