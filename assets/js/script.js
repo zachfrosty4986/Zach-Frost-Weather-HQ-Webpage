@@ -39,20 +39,20 @@ function currentWeather(lat, lon) {
     .then(data => {
       console.log(data);
       document.querySelector('#current-weather-info').innerHTML = '';
-    const h2 = document.createElement('h2');
-    h2.textContent = 'Your Location: '+data.name;
-    const weatherConditions = document.createElement('p')
-    const temp = document.createElement('p')
-    const humidity = document.createElement('p')
-    const feels_like = document.createElement('p')
-    const windSpeed = document.createElement('p')
-    weatherConditions.textContent = 'Current Conditions: '+data.weather.description
-    temp.textContent = 'Current Temperature: '+data.main.temp+'F'
-    humidity.textContent = 'Current Humidity: '+data.main.humidity+'%'
-    feels_like.textContent = 'Current Feels-Like Temprature: '+data.main.feels_like+'F'
-    windSpeed.textContent = 'Current Wind Speeds: '+data.wind.speed+'mph'
-    document.querySelector('#current-weather-info').append(h2, temp, humidity, feels_like, windSpeed, weatherConditions);
-    updateWeatherInfo(data);
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Your Location: ' + data.name;
+      const weatherConditions = document.createElement('p')
+      const temp = document.createElement('p')
+      const humidity = document.createElement('p')
+      const feels_like = document.createElement('p')
+      const windSpeed = document.createElement('p')
+      weatherConditions.textContent = 'Current Conditions: ' + data.weather[0].description
+      temp.textContent = 'Current Temperature: ' + data.main.temp + 'F'
+      humidity.textContent = 'Current Humidity: ' + data.main.humidity + '%'
+      feels_like.textContent = 'Current Feels-Like Temprature: ' + data.main.feels_like + 'F'
+      windSpeed.textContent = 'Current Wind Speeds: ' + data.wind.speed + 'mph'
+      document.querySelector('#current-weather-info').append(h2, temp, humidity, feels_like, windSpeed, weatherConditions);
+      updateWeatherInfo(data);
     })
 }
 1
@@ -67,16 +67,39 @@ function getWeatherData(lat, lon) {
     .then(data => {
       console.log(data);
       document.querySelector('#forecast-info').innerHTML = '';
-      const temp = document.createElement('p')
-      const humidity = document.createElement('p')
+
+      for (let i = 0; i < 5; i++) {
+
+        const forecast = data.list[i];
+        const date = new Date(forecast.dt * 1000);
+
+        const forecastInfo = document.createElement('div');
+        forecastInfo.classList.add('forecast-item');
+
+        const dateElement = document.createElement('h3');
+        dateElement.textContent = date.toDateString();
+
+        const conditionElement = document.createElement('p')
+        conditionElement.textContent = 'Forecast: '+forecast.weather[0].main;
+
+        const tempElement = document.createElement('p');
+        tempElement.textContent = 'Temperature: ' + forecast.main.temp + 'F';
+
+        const humidityElement = document.createElement('p');
+        humidityElement.textContent = 'Humidity: ' + forecast.main.humidity + '%';
+
+        forecastInfo.append(dateElement, tempElement, humidityElement, conditionElement);
+        document.querySelector('#forecast-info').appendChild(forecastInfo);
+      }
+
       // Update current weather and forecast information
-      temp.textContent = 'Forecast Temperature: '+data.main.temp+'F'
-      humidity.textContent = 'Forecast Humidity: '+data.main.humidity+'%'
-      document.querySelector('#forecast-info').append(h2, temp, humidity,);
+      // temp.textContent = 'Forecast Temperature: '+data.list[0].main.temp+'F'
+      // humidity.textContent = 'Forecast Humidity: '+data.list[0].main.humidity+'%'
+      // document.querySelector('#forecast-info').append(temp, humidity);
       updateWeatherInfo(data);
-      
+      //for loop for 5 days
     })
-    .catch(error => console.error('Error fetching data:', error));
+    .catch(error => console.error(error));
 }
 
 // Function to update weather information in the UI

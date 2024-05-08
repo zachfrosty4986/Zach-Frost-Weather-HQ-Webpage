@@ -14,6 +14,33 @@ h2 {
     margin-top: 5px;
 }
 
+h3 {
+    font-family: Bradley Hand, Cursive;
+    margin-top: 5px;
+    border-bottom: solid 2px black;
+    display: inline-block;
+}
+
+.forecast-item {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.forecast-item > div {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (min-width: 768px) {
+    .forecast-item {
+        flex-direction: row;
+    }
+}
+
+.forecast-item > div {
+    flex-basis: 50%;
+}
+
 /* Body styles */
 body {
     font-family: Arial, sans-serif;
