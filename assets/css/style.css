@@ -21,7 +21,17 @@ h3 {
     display: inline-block;
 }
 
+.forecast-info {
+    display: flex;
+    flex: wrap;
+}
+
 .forecast-item {
+    border: solid 2px black;
+    flex: 0, 1, 150px;
+}
+
+/* .forecast-item {
     display: flex;
     flex-wrap: wrap;
 }
@@ -39,7 +49,7 @@ h3 {
 
 .forecast-item > div {
     flex-basis: 50%;
-}
+} */
 
 /* Body styles */
 body {

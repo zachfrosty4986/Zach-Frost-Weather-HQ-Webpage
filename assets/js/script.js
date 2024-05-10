@@ -46,12 +46,15 @@ function currentWeather(lat, lon) {
       const humidity = document.createElement('p')
       const feels_like = document.createElement('p')
       const windSpeed = document.createElement('p')
+      const icon = document.createElement('img');
+
       weatherConditions.textContent = 'Current Conditions: ' + data.weather[0].description
       temp.textContent = 'Current Temperature: ' + data.main.temp + 'F'
       humidity.textContent = 'Current Humidity: ' + data.main.humidity + '%'
       feels_like.textContent = 'Current Feels-Like Temprature: ' + data.main.feels_like + 'F'
       windSpeed.textContent = 'Current Wind Speeds: ' + data.wind.speed + 'mph'
-      document.querySelector('#current-weather-info').append(h2, temp, humidity, feels_like, windSpeed, weatherConditions);
+      icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+      document.querySelector('#current-weather-info').append(h2, temp, humidity, feels_like, windSpeed, weatherConditions, icon);
       updateWeatherInfo(data);
     })
 }
@@ -68,40 +71,51 @@ function getWeatherData(lat, lon) {
       console.log(data);
       document.querySelector('#forecast-info').innerHTML = '';
 
-      for (let i = 0; i < 5; i++) {
+      const currentDate = dayjs()
+      const time = dayjs('2024-05-08 15:00')
+    
+  for (let i = 0; i < data.list.length; i++) {
+    const weatherItem = data.list[i];
+    const weatherDatetime = dayjs(weatherItem.dt_txt)
 
-        const forecast = data.list[i];
-        const date = new Date(forecast.dt * 1000);
+    // Check if it's the current day or not 3PM
 
-        const forecastInfo = document.createElement('div');
-        forecastInfo.classList.add('forecast-item');
+    const isToday = currentDate.isSame(weatherDatetime, 'day');
+    const is3PM = time.format('H') === weatherDatetime.format('H');
 
-        const dateElement = document.createElement('h3');
-        dateElement.textContent = date.toDateString();
 
-        const conditionElement = document.createElement('p')
-        conditionElement.textContent = 'Forecast: '+forecast.weather[0].main;
+    if (isToday || !is3PM) {
+      continue;
+    }
 
-        const tempElement = document.createElement('p');
-        tempElement.textContent = 'Temperature: ' + forecast.main.temp + 'F';
+    // Only render forecast if both conditions are true
+    oneDayForecast(data.list[i]);
+  }
+});
 
-        const humidityElement = document.createElement('p');
-        humidityElement.textContent = 'Humidity: ' + forecast.main.humidity + '%';
-
-        forecastInfo.append(dateElement, tempElement, humidityElement, conditionElement);
-        document.querySelector('#forecast-info').appendChild(forecastInfo);
-      }
-
-      // Update current weather and forecast information
-      // temp.textContent = 'Forecast Temperature: '+data.list[0].main.temp+'F'
-      // humidity.textContent = 'Forecast Humidity: '+data.list[0].main.humidity+'%'
-      // document.querySelector('#forecast-info').append(temp, humidity);
-      updateWeatherInfo(data);
-      //for loop for 5 days
-    })
-    .catch(error => console.error(error));
 }
 
+function oneDayForecast(forecast) {
+  const date = new Date(forecast.dt * 1000);
+
+  const forecastInfo = document.createElement('div');
+  forecastInfo.classList.add('forecast-item');
+
+  const dateElement = document.createElement('h3');
+  dateElement.textContent = date.toDateString();
+
+  const conditionElement = document.createElement('p')
+  conditionElement.textContent = 'Forecast: ' + forecast.weather[0].main;
+
+  const tempElement = document.createElement('p');
+  tempElement.textContent = 'Temperature: ' + forecast.main.temp + 'F';
+
+  const humidityElement = document.createElement('p');
+  humidityElement.textContent = 'Humidity: ' + forecast.main.humidity + '%';
+
+  forecastInfo.append(dateElement, tempElement, humidityElement, conditionElement);
+  document.querySelector('#forecast-info').appendChild(forecastInfo);
+}
 // Function to update weather information in the UI
 function updateWeatherInfo(data) {
   // Update current weather information
@@ -117,4 +131,4 @@ function init() {
 }
 
 // Call initialization function
-init();
+init()
