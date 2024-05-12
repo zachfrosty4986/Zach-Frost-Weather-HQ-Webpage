@@ -16,7 +16,7 @@ form.addEventListener('submit', (event) => {
 });
 // Searchbar functionality for calculating the coordinates for forecast calculation
 function geoCode(city) {
-  const requestCity = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
+  const requestCity = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
   fetch(requestCity)
     .then(function (response) {
       console.log(response)
@@ -58,7 +58,7 @@ function currentWeather(lat, lon) {
       updateWeatherInfo(data);
     })
 }
-1
+
 
 // Function to fetch weather data from API
 function getWeatherData(lat, lon) {
