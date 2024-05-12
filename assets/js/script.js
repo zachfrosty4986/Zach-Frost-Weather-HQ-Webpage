@@ -16,6 +16,7 @@ form.addEventListener('submit', (event) => {
 });
 // Searchbar functionality for calculating the coordinates for forecast calculation
 function geoCode(city) {
+  //Added https for site security
   const requestCity = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
   fetch(requestCity)
     .then(function (response) {
