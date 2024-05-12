@@ -14,7 +14,7 @@ form.addEventListener('submit', (event) => {
   const city = cityInput.value;
   geoCode(city);
 });
-
+// Searchbar functionality for calculating the coordinates for forecast calculation
 function geoCode(city) {
   const requestCity = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
   fetch(requestCity)
@@ -31,7 +31,7 @@ function geoCode(city) {
 
 
 }
-
+// Function calculating current condtions for a given location. 
 function currentWeather(lat, lon) {
   const currentForecast = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`
   fetch(currentForecast)
@@ -73,7 +73,8 @@ function getWeatherData(lat, lon) {
 
       const currentDate = dayjs()
       const time = dayjs('2024-05-08 15:00')
-    
+    // This determines the dates and times for the five day forecast structure
+    // Run the function if the date is not today and only if it is 3pm
   for (let i = 0; i < data.list.length; i++) {
     const weatherItem = data.list[i];
     const weatherDatetime = dayjs(weatherItem.dt_txt)
@@ -94,7 +95,7 @@ function getWeatherData(lat, lon) {
 });
 
 }
-
+// Function calculating the five day forecast parameters. 
 function oneDayForecast(forecast) {
   const date = new Date(forecast.dt * 1000);
 
